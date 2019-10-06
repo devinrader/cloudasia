@@ -14,9 +14,15 @@ jobs:
     
     - name: Install twilio-cli
       run: npm install -D twilio-cli 
+
+    - name: Install twilio-cli
+      run: npx twilio phone-numbers:list
+
+    - name: Install twilio Serverless plugin
+      run: npm twilio plugins:install @twilio-labs/plugin-serverless
       
     - name: Deploy to Serverless
-      run: npx twilio
+      run: npx twilio serverless:list
       
     - name: Run a multi-line script
       run: |
