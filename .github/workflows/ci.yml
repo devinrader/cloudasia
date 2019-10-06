@@ -16,9 +16,10 @@ jobs:
         TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
 
     - name: Install twilio-cli
-      run: | 
-        npm install -D twilio-cli 
-        npx twilio profiles:add cloudasia
+      run: npm install -D twilio-cli 
+      
+    - name: Install twilio-cli
+      run: npx twilio profiles:add cloudasia
 
     - name: Install twilio-cli
       run: npx twilio phone-numbers:list
