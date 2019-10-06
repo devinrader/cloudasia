@@ -13,7 +13,7 @@ jobs:
       run: echo Hello, world!
     
     - name: Install twilio-cli
-      run: sudo npm i twilio-cli -g
+      run: npm i twilio-cli
       
     - name: Deploy to Serverless
       run: twilio serverless:deploy 
