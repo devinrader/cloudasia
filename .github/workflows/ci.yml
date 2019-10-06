@@ -18,7 +18,7 @@ jobs:
     - name: Install twilio-cli
       run: | 
         npm install -D twilio-cli 
-        npx twilio login
+        npx twilio profiles:add cloudasia
 
     - name: Install twilio-cli
       run: npx twilio phone-numbers:list
