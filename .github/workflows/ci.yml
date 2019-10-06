@@ -13,10 +13,10 @@ jobs:
       run: echo Hello, world!
     
     - name: Install twilio-cli
-      run: npm i twilio-cli
+      run: npm install -D twilio-cli 
       
     - name: Deploy to Serverless
-      run: twilio serverless:deploy 
+      run: npx twilio
       
     - name: Run a multi-line script
       run: |
