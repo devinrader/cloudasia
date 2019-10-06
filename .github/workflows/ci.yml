@@ -16,7 +16,9 @@ jobs:
         TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
 
     - name: Install twilio-cli
-      run: npm install -D twilio-cli 
+      run: | 
+        npm install -D twilio-cli 
+        npx twilio login
 
     - name: Install twilio-cli
       run: npx twilio phone-numbers:list
