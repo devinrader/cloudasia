@@ -6,7 +6,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    
+    env: 
+      PHONE_NUMBER: ""    
     steps:
     - uses: actions/checkout@v1
 
@@ -18,7 +19,7 @@ jobs:
       
     - name: Provision New Phone Number
       run: |
-        PHONE_NUMBER=$(npx twilio api:core:incoming-phone-numbers:create --area-code="704" -o json | jq -r '.[0] | .phoneNumber')
+        $PHONE_NUMBER=$(npx twilio api:core:incoming-phone-numbers:create --area-code="704" -o json | jq -r '.[0] | .phoneNumber')
         echo "Phone Number: $PHONE_NUMBER"
       env:
         TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
@@ -26,12 +27,15 @@ jobs:
 
     - name: Deploy to Serverless
       run: | 
+        echo "Phone Number: $PHONE_NUMBER"
         DEPLOY_RESULT=$(npx twilio serverless:deploy --force)
         echo "Deploy Result $DEPLOY_RESULT"
 
         echo "Locating Deploy URL"
         DEPLOY_URL=$(echo $DEPLOY_RESULT | grep -oE "https:\/\/[A-Za-z0-9-]*.twil.io\/[A-Za-z0-9-]*")
         echo "Deploy URL: $DEPLOY_URL"
+        
+        npx twilio phone-numbers:update $PHONE_NUMBER --sms-url="$DEPLOY_URL"
       env:
         TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
         TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
