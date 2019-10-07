@@ -25,7 +25,9 @@ jobs:
         TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
 
     - name: Deploy to Serverless
-      run: npx twilio serverless:deploy -o json
+      run: | 
+        DEPLOY_URL=$(npx twilio serverless:deploy --force | grep -o "https://(.*)")
+        echo "Phone Number: $PHONE_NUMBER"
       env:
         TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
         TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
