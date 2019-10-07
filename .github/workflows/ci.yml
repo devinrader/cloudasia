@@ -31,7 +31,7 @@ jobs:
         
         echo "Trying to find Deploy URL"
         
-        echo $DEPLOY_RESULT | grep -o "https://(.*)"
+        echo $DEPLOY_RESULT | grep -oE "https://(.*)"
         
 #        echo "Deploy URL: $DEPLOY_URL"
       env:
