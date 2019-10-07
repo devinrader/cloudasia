@@ -18,7 +18,7 @@ jobs:
       
     - name: Provision New Phone Number
       run: |
-        PHONE_NUMBER=(npx twilio api:core:incoming-phone-numbers:create --area-code="704" -o json | jq -r '.[0] | .phoneNumber')
+        PHONE_NUMBER=$(npx twilio api:core:incoming-phone-numbers:create --area-code="704" -o json | jq -r '.[0] | .phoneNumber')
         echo "Phone Number: $PHONE_NUMBER"
       env:
         TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
