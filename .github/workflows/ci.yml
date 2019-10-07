@@ -28,12 +28,10 @@ jobs:
       run: | 
         DEPLOY_RESULT=$(npx twilio serverless:deploy --force)
         echo "Deploy Result $DEPLOY_RESULT"
-        
-        echo "Trying to find Deploy URL"
-        
-        echo $DEPLOY_RESULT | grep -oE "https://(.*)"
-        
-#        echo "Deploy URL: $DEPLOY_URL"
+
+        echo "Locating Deploy URL"
+        DEPLY_URL=$($DEPLOY_RESULT | grep -oE "(https://(.*).twil.io/.*)")
+        echo "Deploy URL: $DEPLOY_URL"
       env:
         TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
         TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
