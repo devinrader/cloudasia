@@ -9,31 +9,24 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
 
     - name: Install twilio-cli
       run: npm install -D twilio-cli 
-      
-#    - name: Install twilio-cli
-#      run: npx twilio login
-#      env:
-#        TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
-#        TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
 
-    - name: Install twilio-cli
-      run: npx twilio phone-numbers:list
+    - name: Install twilio Serverless plugin
+      run: npx twilio plugins:install @twilio-labs/plugin-serverless
+      
+    - name: Provision New Phone Number
+      run: |
+        PHONE_NUMBER=$(npx twilio api:core:incoming-phone-numbers:create --area-code="704" -o json | jq -r '.[0] | .phoneNumber')
+        echo "Phone Number: $PHONE_NUMBER"
       env:
         TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
         TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
 
-    - name: Install twilio Serverless plugin
-      run: npm twilio plugins:install @twilio-labs/plugin-serverless
-      
     - name: Deploy to Serverless
-      run: npx twilio serverless:list
+      run: npx twilio serverless:deploy
+      env:
+        TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+        TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
       
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
