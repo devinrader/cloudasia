@@ -6,8 +6,6 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    env: 
-      PHONE_NUMBER: "[notset]"    
     steps:
     - uses: actions/checkout@v1
 
@@ -15,29 +13,24 @@ jobs:
       run: npm install -D twilio-cli 
 
     - name: Install twilio Serverless plugin
-      run: |
-        echo "Phone Number: $PHONE_NUMBER"
-        npx twilio plugins:install @twilio-labs/plugin-serverless
+      run: npx twilio plugins:install @twilio-labs/plugin-serverless
       
-    - name: Provision New Phone Number
-      run: |
-        PHONE_NUMBER=$(npx twilio api:core:incoming-phone-numbers:create --area-code="704" -o json | jq -r '.[0] | .phoneNumber')
-        echo "Phone Number: $PHONE_NUMBER"
-      env:
-        TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
-        TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
-
-    - name: Deploy to Serverless
+    - name: Provision Number, Deploy to Serverless
       run: | 
-        echo "Phone Number: $PHONE_NUMBER"
         DEPLOY_RESULT=$(npx twilio serverless:deploy --force)
         echo "Deploy Result $DEPLOY_RESULT"
 
         echo "Locating Deploy URL"
         DEPLOY_URL=$(echo $DEPLOY_RESULT | grep -oE "https:\/\/[A-Za-z0-9-]*.twil.io\/[A-Za-z0-9-]*")
         echo "Deploy URL: $DEPLOY_URL"
+
+        echo "Provision New Phone Number"
+        PHONE_NUMBER=$(npx twilio api:core:incoming-phone-numbers:create --area-code="704" -o json | jq -r '.[0] | .phoneNumber')
+        echo "Phone Number: $PHONE_NUMBER"
         
+        echo "Updating Phone Number"
         npx twilio phone-numbers:update $PHONE_NUMBER --sms-url="$DEPLOY_URL"
+        echo "Phone Number Updated"
       env:
         TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
         TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
