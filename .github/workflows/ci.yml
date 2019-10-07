@@ -30,7 +30,7 @@ jobs:
         echo "Deploy Result $DEPLOY_RESULT"
 
         echo "Locating Deploy URL"
-        DEPLOY_URL=$(echo $DEPLOY_RESULT | grep -oE "(https:\/\/(.*?).twil\.io\/.*)")
+        DEPLOY_URL=$(echo $DEPLOY_RESULT | grep -oxE "(https:\/\/(.*?).twil\.io\/.*)")
         echo "Deploy URL: $DEPLOY_URL"
       env:
         TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
