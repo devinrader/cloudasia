@@ -25,13 +25,13 @@ jobs:
         echo "Deploy URL: $DEPLOY_URL"
 
         echo "Provision New Phone Number"
-        PHONE_NUMBER=$(npx twilio api:core:available-phone-numbers:mobile:list --country-code="SG" -o json | jq -r '.available_phone_numbers | .[0] | .phone_number')
-        echo "Phone Number: $PHONE_NUMBER"
+#        PHONE_NUMBER=$(npx twilio api:core:available-phone-numbers:mobile:list --country-code="SG" -o json | jq -r '.available_phone_numbers | .[0] | .phone_number')
+#        echo "Phone Number: $PHONE_NUMBER"
 
-        npx twilio api:core:incoming-phone-numbers --phone-number="$PHONE_NUMBER" --identity-sid="$IDENTITY_SID" --address-sid="$ADDRESS_SID" --sms-url="$DEPLOY_URL"
+#        npx twilio api:core:incoming-phone-numbers --phone-number="$PHONE_NUMBER" --identity-sid="$IDENTITY_SID" --address-sid="$ADDRESS_SID" --sms-url="$DEPLOY_URL"
         
-        echo "Updating Phone Number"
-        echo "Phone Number Updated"
+#        echo "Updating Phone Number"
+#        echo "Phone Number Updated"
       env:
         TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
         TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
