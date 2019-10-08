@@ -25,7 +25,7 @@ jobs:
         echo "Deploy URL: $DEPLOY_URL"
 
         echo "Provision New Phone Number"
-        PHONE_NUMBER = $(npx twilio api:core:available-phone-numbers:mobile:list --country-code="SG" -o json | jq -r '.[0] | .phone_number')
+        PHONE_NUMBER=$(npx twilio api:core:available-phone-numbers:mobile:list --country-code="SG" -o json | jq -r '.[0] | .phone_number')
 
         
         echo "Phone Number: $PHONE_NUMBER"
