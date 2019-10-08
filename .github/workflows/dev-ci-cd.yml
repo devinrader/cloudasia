@@ -26,13 +26,11 @@ jobs:
 
         echo "Provision New Phone Number"
         PHONE_NUMBER=$(npx twilio api:core:available-phone-numbers:mobile:list --country-code="SG" -o json | jq -r '.available_phone_numbers | .[0] | .phone_number')
-#       PHONE_NUMBER=$(npx twilio api:core:incoming-phone-numbers:create --area-code="704" -o json | jq -r '.[0] | .phoneNumber')
         echo "Phone Number: $PHONE_NUMBER"
 
         npm twilio api:core:incoming-phone-numbers --phone-number="$PHONE_NUMBER" --identity-sid="$IDENTITY_SID" --address-sid="$ADDRESS_SID" --sms-url="$DEPLOY_URL"
         
         echo "Updating Phone Number"
-#        npx twilio phone-numbers:update $PHONE_NUMBER --sms-url="$DEPLOY_URL"
         echo "Phone Number Updated"
       env:
         TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
@@ -40,3 +38,5 @@ jobs:
         IDENTITY_SID: ${{ secrets.IDENTITY_SID }}
         ADDRESS_SID: ${{ secrets.ADDRESS_SID }}
       
+#       npx twilio phone-numbers:update $PHONE_NUMBER --sms-url="$DEPLOY_URL"
+#       PHONE_NUMBER=$(npx twilio api:core:incoming-phone-numbers:create --area-code="704" -o json | jq -r '.[0] | .phoneNumber')
