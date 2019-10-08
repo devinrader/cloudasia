@@ -28,7 +28,7 @@ jobs:
         PHONE_NUMBER=$(npx twilio api:core:available-phone-numbers:mobile:list --country-code="SG" -o json | jq -r '.available_phone_numbers | .[0] | .phone_number')
         echo "Phone Number: $PHONE_NUMBER"
 
-        npm twilio api:core:incoming-phone-numbers --phone-number="$PHONE_NUMBER" --identity-sid="$IDENTITY_SID" --address-sid="$ADDRESS_SID" --sms-url="$DEPLOY_URL"
+        npx twilio api:core:incoming-phone-numbers --phone-number="$PHONE_NUMBER" --identity-sid="$IDENTITY_SID" --address-sid="$ADDRESS_SID" --sms-url="$DEPLOY_URL"
         
         echo "Updating Phone Number"
         echo "Phone Number Updated"
